@@ -19,7 +19,7 @@ function Login({ setAuthToken }) {
       return;
     }
     try {
-      const response = await axios.post('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com', { username, password });
+      const response = await axios.post('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/login', { username, password });
       const { access_token, isAdmin } = response.data;
       setAuthToken(access_token, isAdmin);
       localStorage.setItem('token', access_token); // JWT 토큰을 localStorage에 저장

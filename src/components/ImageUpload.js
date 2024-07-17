@@ -38,7 +38,7 @@ function ImageUpload({ authToken, addImage, handleLogout }) {
     formData.append('file', selectedFile);
 
     try {
-      const response = await axios.post('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com', formData, {
+      const response = await axios.post('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${authToken}`
