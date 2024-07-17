@@ -14,7 +14,7 @@ function ImageDetailPage({ authToken }) {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/images/${imageId}`, {
+        const response = await axios.get(`https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/images/${imageId}`, {
           headers: {
             'Authorization': `Bearer ${authToken}`
           }
@@ -39,7 +39,7 @@ function ImageDetailPage({ authToken }) {
 
   const handleSaveInterpretation = async () => {
     try {
-      const response = await axios.put(`http://localhost:5000/images/${imageId}`, {
+      const response = await axios.put(`https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/images/${imageId}`, {
         interpretation: newInterpretation
       }, {
         headers: {
@@ -61,7 +61,7 @@ function ImageDetailPage({ authToken }) {
     <>
       <Header />
       <Container className="my-5 content">
-        <Image src={`https://pet-medical-histoy-n0uny5i36-mks-projects-119eb587.vercel.app/uploads/${image.filename}`} fluid />
+        <Image src={`https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/uploads/${image.filename}`} fluid />
         <h2>{image.title}</h2>
         <p>{image.interpretation}</p>
         <Button variant="secondary" onClick={handleOpenModal}>수정하기</Button>

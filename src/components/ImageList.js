@@ -12,7 +12,7 @@ function ImageList({ authToken }) {
 
   const fetchImages = useCallback(async () => {
     try {
-      const response = await axios.get('https://pet-medical-histoy-n0uny5i36-mks-projects-119eb587.vercel.app', {
+      const response = await axios.get('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com', {
         headers: {
           'Authorization': `Bearer ${authToken}`
         }
@@ -30,7 +30,7 @@ function ImageList({ authToken }) {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.get('http://localhost:5000/search', {
+      const response = await axios.get('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/search', {
         params: { q: searchQuery },
         headers: {
           'Authorization': `Bearer ${authToken}`
@@ -60,7 +60,7 @@ function ImageList({ authToken }) {
       <div className="image-list">
         {images && images.length > 0 ? images.map((image, index) => (
           <Card key={index} onClick={() => handleImageClick(image)} className="card">
-            <Card.Img variant="top" src={`http://localhost:5000/uploads/${image.filename}`} />
+            <Card.Img variant="top" src={`https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/uploads/${image.filename}`} />
             <Card.Body className="card-body">
               <Card.Title className="card-title">{image.title}</Card.Title>
               <Card.Text className="card-text">{image.interpretation}</Card.Text>

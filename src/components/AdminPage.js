@@ -161,7 +161,7 @@ function AdminPage({ authToken }) {
                 <td>
                   <div className="image-container">
                     <Image
-                      src={`http://localhost:5000/uploads/${image.filename}`}
+                      src={`https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/uploads/${image.filename}`}
                       thumbnail
                       onClick={() => handleImageClick(image.filename)}
                       style={{ cursor: 'pointer' }}
