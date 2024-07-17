@@ -39,7 +39,7 @@ function App() {
     const fetchUserProfile = async () => {
       if (token) {
         try {
-          const response = await fetch('http://localhost:5000/profile', {
+          const response = await fetch('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/', {
             headers: {
               'Authorization': `Bearer ${token}`
             }
