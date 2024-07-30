@@ -12,7 +12,7 @@ function ImageList({ authToken }) {
 
   const fetchImages = useCallback(async () => {
     try {
-      const response = await axios.get('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com', {
+      const response = await axios.get('https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app', {
         headers: {
           'Authorization': `Bearer ${authToken}`
         }
@@ -30,7 +30,7 @@ function ImageList({ authToken }) {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.get('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/search', {
+      const response = await axios.get('https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/search', {
         params: { q: searchQuery },
         headers: {
           'Authorization': `Bearer ${authToken}`
@@ -60,7 +60,7 @@ function ImageList({ authToken }) {
       <div className="image-list">
         {images && images.length > 0 ? images.map((image, index) => (
           <Card key={index} onClick={() => handleImageClick(image)} className="card">
-            <Card.Img variant="top" src={`https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/uploads/${image.filename}`} />
+            <Card.Img variant="top" src={`https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/uploads/${image.filename}`} />
             <Card.Body className="card-body">
               <Card.Title className="card-title">{image.title}</Card.Title>
               <Card.Text className="card-text">{image.interpretation}</Card.Text>

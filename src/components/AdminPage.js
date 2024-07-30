@@ -22,7 +22,7 @@ function AdminPage({ authToken }) {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com//admin/images_with_users', {
+        const response = await axios.get('https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/admin/images_with_users', {
           headers: { 'Authorization': `Bearer ${authToken}` }
         });
         const sortedImages = response.data.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
@@ -35,7 +35,7 @@ function AdminPage({ authToken }) {
 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com//admin/users', {
+        const response = await axios.get('https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/admin/users', {
           headers: { 'Authorization': `Bearer ${authToken}` }
         });
         setUsers(response.data);
@@ -77,7 +77,7 @@ function AdminPage({ authToken }) {
   const handleSaveInterpretation = async () => {
     if (selectedImage) {
       try {
-        const response = await axios.put(`https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com//admin/images/${selectedImage._id}`, {
+        const response = await axios.put(`https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/admin/images/${selectedImage._id}`, {
           title: newTitle,
           interpretation: newInterpretation,
           isNew: false
@@ -95,7 +95,7 @@ function AdminPage({ authToken }) {
   };
 
   const handleImageClick = (imagePath) => {
-    setImageToShow(`https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com//uploads/${imagePath}`);
+    setImageToShow(`https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/uploads/${imagePath}`);
     setShowImageModal(true);
   };
 
@@ -161,7 +161,7 @@ function AdminPage({ authToken }) {
                 <td>
                   <div className="image-container">
                     <Image
-                      src={`https://damp-caverns-67007-3dcfda0b9d8e.herokuapp.com/uploads/${image.filename}`}
+                      src={`https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/uploads/${image.filename}`}
                       thumbnail
                       onClick={() => handleImageClick(image.filename)}
                       style={{ cursor: 'pointer' }}
