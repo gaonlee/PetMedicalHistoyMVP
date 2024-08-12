@@ -24,11 +24,22 @@ p {
     padding: 10px 20px;
     margin: 10px;
     border: none;
-    background-color: #007bff;
     color: white;
     text-decoration: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.button-upload {
+    background-color: #007bff; /* 이미지 불러오기 버튼 색상 */
+}
+
+.button-submit {
+    background-color: #28a745; /* 업로드 버튼 색상 */
+}
+
+.button-view {
+    background-color: #6c757d; /* 이미지 조회 버튼 색상 */
 }
 
 .button-secondary {
@@ -41,6 +52,11 @@ p {
 
 .upload-button {
     display: inline-block;
+}
+
+.small-button {
+    padding: 5px 10px;
+    font-size: 14px;
 }
 
 @media (max-width: 600px) {

@@ -6,16 +6,29 @@ import Header from './Header';
 import '../styles/Button.css';
 import './Register.css';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function Register() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!validateEmail(email)) {
+      setError('유효한 이메일 주소를 입력해주세요.');
+      return;
+    }
+
     try {
-      await axios.post('https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/register', { username, password });
+      await axios.post(`${apiUrl}/register`, { email, password });
       navigate('/login');
     } catch (error) {
       setError('Registration failed');
@@ -30,13 +43,13 @@ function Register() {
           <Col>
             <h2 className="text-center">회원가입</h2>
             <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="formUsername" className="mb-3 form-group">
-                <Form.Label className="form-label">아이디</Form.Label>
+              <Form.Group controlId="formEmail" className="mb-3 form-group">
+                <Form.Label className="form-label">이메일</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder="아이디를 입력하세요"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  type="email"
+                  placeholder="이메일을 입력하세요"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="custom-input"
                 />
               </Form.Group>

@@ -19,10 +19,7 @@ function Profile({ user }) {
           <Card.Body>
             <Card.Title>내 정보</Card.Title>
             <Card.Text>
-              <strong>아이디:</strong> {user.username}
-            </Card.Text>
-            <Card.Text>
-              <strong>가입날짜:</strong> {new Date(user.joinedDate).toLocaleDateString()}
+              <strong>아이디: 준비 중 입니다.</strong> {user.username}
             </Card.Text>
             <Button variant="primary" onClick={() => navigate('/')}>뒤로가기</Button>
           </Card.Body>

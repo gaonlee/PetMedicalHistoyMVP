@@ -5,6 +5,8 @@ import Header from './Header';
 import '../styles/Button.css';
 import '../styles/AdminPage.css';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function AdminPage({ authToken }) {
   const [images, setImages] = useState([]);
   const [filteredImages, setFilteredImages] = useState([]);
@@ -22,7 +24,7 @@ function AdminPage({ authToken }) {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/admin/images_with_users', {
+        const response = await axios.get(`${apiUrl}/admin/images_with_users`, {
           headers: { 'Authorization': `Bearer ${authToken}` }
         });
         const sortedImages = response.data.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
@@ -35,7 +37,7 @@ function AdminPage({ authToken }) {
 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/admin/users', {
+        const response = await axios.get(`${apiUrl}/admin/users`, {
           headers: { 'Authorization': `Bearer ${authToken}` }
         });
         setUsers(response.data);
@@ -62,8 +64,8 @@ function AdminPage({ authToken }) {
 
   const handleOpenModal = (image) => {
     setSelectedImage(image);
-    setNewTitle(image.title);
-    setNewInterpretation(image.interpretation);
+    setNewTitle(image.title || '');
+    setNewInterpretation(image.interpretation || '');
     setShowModal(true);
   };
 
@@ -77,7 +79,7 @@ function AdminPage({ authToken }) {
   const handleSaveInterpretation = async () => {
     if (selectedImage) {
       try {
-        const response = await axios.put(`https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/admin/images/${selectedImage._id}`, {
+        const response = await axios.put(`${apiUrl}/admin/images/${selectedImage._id}`, {
           title: newTitle,
           interpretation: newInterpretation,
           isNew: false
@@ -94,18 +96,31 @@ function AdminPage({ authToken }) {
     }
   };
 
-  const handleImageClick = (imagePath) => {
-    setImageToShow(`https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/uploads/${imagePath}`);
-    setShowImageModal(true);
-  };
+  const handleImageClick = (file_id) => {
+    axios.get(`${apiUrl}/images/${file_id}`, {
+        headers: {
+            'Authorization': `Bearer ${authToken}`
+        },
+        responseType: 'blob'
+    })
+    .then(response => {
+        const url = URL.createObjectURL(new Blob([response.data]));
+        setImageToShow(url);
+        setShowImageModal(true);
+    })
+    .catch(error => {
+        console.error('Error fetching image:', error);
+    });
+};
+
 
   const handleCloseImageModal = () => {
     setShowImageModal(false);
     setImageToShow('');
   };
 
-  const filterByUser = (username) => {
-    const userImages = images.filter(image => image.username === username)
+  const filterByUser = (email) => {
+    const userImages = images.filter(image => image.user_id === email)
       .sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
     setFilteredImages(userImages);
     setDropdownOpen(false);
@@ -134,8 +149,8 @@ function AdminPage({ authToken }) {
             <Dropdown.Menu className="custom-dropdown-menu">
               <Dropdown.Item onClick={showAllImages}>Show All Images</Dropdown.Item>
               {users.map(user => (
-                <Dropdown.Item key={user._id} onClick={() => filterByUser(user.username)}>
-                  {user.username}
+                <Dropdown.Item key={user._id} onClick={() => filterByUser(user.email)}>
+                  {user.email}
                 </Dropdown.Item>
               ))}
             </Dropdown.Menu>
@@ -149,7 +164,7 @@ function AdminPage({ authToken }) {
               <th>Image</th>
               <th>Upload Time</th>
               <th>Interpretation</th>
-              <th>Username</th>
+              <th>User Email</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -161,17 +176,17 @@ function AdminPage({ authToken }) {
                 <td>
                   <div className="image-container">
                     <Image
-                      src={`https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/uploads/${image.filename}`}
+                      src={`${apiUrl}/images/${image.file_id}`}
                       thumbnail
-                      onClick={() => handleImageClick(image.filename)}
+                      onClick={() => handleImageClick(image.file_id)}
                       style={{ cursor: 'pointer' }}
                     />
                     {image.isNew && <span className="new-badge">NEW</span>}
                   </div>
                 </td>
-                <td>{new Date(image.uploadTime).toLocaleString()}</td> {/* 날짜 및 시간 표시 */}
+                <td>{new Date(image.uploadTime).toLocaleString()}</td>
                 <td>{image.interpretation}</td>
-                <td>{image.username}</td>
+                <td>{image.user_id}</td> {/* user_id로 변경 */}
                 <td><Button variant="secondary" onClick={() => handleOpenModal(image)}>Edit</Button></td>
               </tr>
             ))}

@@ -6,27 +6,41 @@ import Header from './Header';
 import '../styles/Button.css';
 import './Login.css';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+console.log('API URL:', apiUrl);
+
 function Login({ setAuthToken }) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!username || !password) {
-      setError('아이디와 비밀번호를 입력해주세요.');
+    if (!email || !password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
       return;
     }
+
+    if (!validateEmail(email)) {
+      setError('유효한 이메일 주소를 입력해주세요.');
+      return;
+    }
+
     try {
-      const response = await axios.post('https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/login', { username, password });
+      const response = await axios.post(`${apiUrl}/login`, { email, password });
       const { access_token, isAdmin } = response.data;
       setAuthToken(access_token, isAdmin);
       localStorage.setItem('token', access_token); // JWT 토큰을 localStorage에 저장
       localStorage.setItem('isAdmin', isAdmin); // 관리자 여부를 localStorage에 저장
       navigate('/');
     } catch (error) {
-      setError('Invalid username or password');
+      setError('Invalid email or password');
     }
   };
 
@@ -38,13 +52,13 @@ function Login({ setAuthToken }) {
           <Col>
             <h2 className="text-center">로그인</h2>
             <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="formUsername" className="mb-3 form-group">
-                <Form.Label className="form-label">아이디</Form.Label>
+              <Form.Group controlId="formEmail" className="mb-3 form-group">
+                <Form.Label className="form-label">이메일</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder="아이디를 입력하세요"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  type="email"
+                  placeholder="이메일을 입력하세요"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="custom-input"
                 />
               </Form.Group>

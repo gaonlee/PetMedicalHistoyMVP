@@ -20,15 +20,16 @@ function Header() {
           <Dropdown.Menu show className="custom-dropdown-menu">
             <Dropdown.Item as={Link} to="/upload" onClick={() => setShowMenu(false)}>이미지 업로드</Dropdown.Item>
             <Dropdown.Item as={Link} to="/list" onClick={() => setShowMenu(false)}>이미지 조회</Dropdown.Item>
-           
           </Dropdown.Menu>
         )}
       </div>
       <div className="header-center">
         <Link to="/" className="home-link">
-          <img src="/Home_logo.png" alt="Home" className="header-logo" />
+          <div className="logo-container">
+            <img src="/Home_logo.png" alt="Home" className="header-logo" />
+            <div className="header-text">촉촉한코</div>
+          </div>
         </Link>
-        <div className="header-text">촉촉한코</div>
       </div>
       <div className="header-right">
         <Link to="/profile" className="profile-link">

@@ -5,14 +5,16 @@ import { login, logout, selectAuth } from './authSlice';
 import Home from './components/Home';
 import ImageUploadPage from './components/ImageUploadPage';
 import ImageListPage from './components/ImageListPage';
-import ImageDetailPage from './components/ImageDetailPage'; // 추가
-import Profile from './components/ProfilePage'; // Profile 컴포넌트 추가
+import ImageDetailPage from './components/ImageDetailPage';
+import Profile from './components/ProfilePage';
 import Login from './components/Login';
 import Register from './components/Register';
 import AdminPage from './components/AdminPage';
 import { Container } from 'react-bootstrap';
 import { jwtDecode } from 'jwt-decode';
 import './App.css';
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function App() {
   const dispatch = useDispatch();
@@ -39,7 +41,7 @@ function App() {
     const fetchUserProfile = async () => {
       if (token) {
         try {
-          const response = await fetch('https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app', {
+          const response = await fetch(`${apiUrl}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -70,7 +72,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/upload" element={token ? <ImageUploadPage authToken={token} /> : <Navigate to="/login" />} />
           <Route path="/list" element={token ? <ImageListPage authToken={token} /> : <Navigate to="/login" />} />
-          <Route path="/images/:imageId" element={token ? <ImageDetailPage authToken={token} /> : <Navigate to="/login" />} /> {/* 추가 */}
+          <Route path="/images/:file_id" element={token ? <ImageDetailPage authToken={token} /> : <Navigate to="/login" />} />
           <Route path="/admin" element={isAdmin ? <AdminPage authToken={token} /> : <Navigate to="/" />} />
           <Route path="/profile" element={token ? <Profile user={user} /> : <Navigate to="/login" />} /> {/* Profile 라우트 추가 */}
           <Route path="*" element={<Navigate to="/" />} />

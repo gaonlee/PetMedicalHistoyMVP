@@ -1,96 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Container, Image, Form, Button, Modal } from 'react-bootstrap';
-import Header from './Header';
-import '../styles/ImageDetailPage.css';
+import axios from 'axios';
+import { Card, Button } from 'react-bootstrap';
 
-function ImageDetailPage({ authToken }) {
-  const { imageId } = useParams();
+const ImageDetailPage = () => {  // 컴포넌트 이름을 ImageDetailPage로 수정
+  const { file_id } = useParams(); // URL에서 file_id를 가져옵니다.
   const [image, setImage] = useState(null);
-  const [newInterpretation, setNewInterpretation] = useState('');
-  const [showModal, setShowModal] = useState(false);
+  const [imageSrc, setImageSrc] = useState('');
+
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const fetchImage = async () => {
+    const fetchImageDetail = async () => {
       try {
-        const response = await axios.get(`https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/images/${imageId}`, {
+        const response = await axios.get(`${apiUrl}/images/${file_id}`, {
           headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          responseType: 'blob'  // 이미지를 직접 불러오기 위해 필요
         });
-        setImage(response.data);
-        setNewInterpretation(response.data.interpretation);
+
+        const imageData = URL.createObjectURL(response.data); // Blob을 객체 URL로 변환
+        setImageSrc(imageData);
+        
+        // 이미지의 다른 데이터를 가져오기
+        const imageDetailResponse = await axios.get(`${apiUrl}/images/${file_id}/details`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        setImage(imageDetailResponse.data);
       } catch (error) {
-        console.error('Error fetching image:', error);
+        console.error('Error fetching image detail:', error);
       }
     };
 
-    fetchImage();
-  }, [authToken, imageId]);
+    fetchImageDetail();
+  }, [file_id, apiUrl]);
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleSaveInterpretation = async () => {
-    try {
-      const response = await axios.put(`https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/images/${imageId}`, {
-        interpretation: newInterpretation
-      }, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
-        }
-      });
-      setImage(response.data);
-      handleCloseModal();
-    } catch (error) {
-      console.error('Error updating interpretation:', error);
-    }
-  };
-
-  if (!image) {
-    return <p>Loading...</p>;
-  }
+  if (!image) return <p>Loading...</p>;
 
   return (
-    <>
-      <Header />
-      <Container className="my-5 content">
-        <Image src={`https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/uploads/${image.filename}`} fluid />
-        <h2>{image.title}</h2>
-        <p>{image.interpretation}</p>
-        <Button variant="secondary" onClick={handleOpenModal}>수정하기</Button>
-
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>내용 수정하기</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group controlId="interpretation">
-                <Form.Label>내용</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  value={newInterpretation}
-                  onChange={(e) => setNewInterpretation(e.target.value)}
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>닫기</Button>
-            <Button variant="primary" onClick={handleSaveInterpretation}>수정 완료하기</Button>
-          </Modal.Footer>
-        </Modal>
-      </Container>
-    </>
+    <div className="container mt-5">
+      <Card>
+        <Card.Img variant="top" src={imageSrc} alt={image.title || 'Image'} />
+        <Card.Body>
+          <Card.Title>{image.title || 'Untitled'}</Card.Title>
+          <Card.Text>{image.interpretation || 'No description available'}</Card.Text>
+          <Button variant="primary" href="/">Back to List</Button>
+        </Card.Body>
+      </Card>
+    </div>
   );
-}
+};
 
 export default ImageDetailPage;

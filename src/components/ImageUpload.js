@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Form, Alert, Image } from 'react-bootstrap';
+import { Form, Alert, Image, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import '../styles/Button.css';
 import '../styles/ImageUploadPage.css';
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 function ImageUpload({ authToken, addImage, handleLogout }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     try {
@@ -38,7 +42,7 @@ function ImageUpload({ authToken, addImage, handleLogout }) {
     formData.append('file', selectedFile);
 
     try {
-      const response = await axios.post('https://port-0-chokko-lywdjf2ce53ae10e.sel4.cloudtype.app/upload', formData, {
+      const response = await axios.post(`${apiUrl}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${authToken}`
@@ -50,6 +54,10 @@ function ImageUpload({ authToken, addImage, handleLogout }) {
       console.error('Error uploading the file:', error);
       setUploadStatus('업로드에 실패했습니다.');
     }
+  };
+
+  const handleViewImagesClick = () => {
+    navigate('/list');
   };
 
   return (
@@ -73,6 +81,13 @@ function ImageUpload({ authToken, addImage, handleLogout }) {
           {uploadStatus}
         </Alert>
       )}
+      <Button
+        variant="secondary"
+        onClick={handleViewImagesClick}
+        className="button button-view small-button mt-3"
+      >
+        이미지 조회
+      </Button>
     </div>
   );
 }
