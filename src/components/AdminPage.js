@@ -111,7 +111,7 @@ function AdminPage({ authToken }) {
     .catch(error => {
         console.error('Error fetching image:', error);
     });
-};
+  };
 
 
   const handleCloseImageModal = () => {
@@ -120,7 +120,7 @@ function AdminPage({ authToken }) {
   };
 
   const filterByUser = (email) => {
-    const userImages = images.filter(image => image.user_id === email)
+    const userImages = images.filter(image => image.user_email === email)
       .sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
     setFilteredImages(userImages);
     setDropdownOpen(false);
@@ -186,7 +186,7 @@ function AdminPage({ authToken }) {
                 </td>
                 <td>{new Date(image.uploadTime).toLocaleString()}</td>
                 <td>{image.interpretation}</td>
-                <td>{image.user_id}</td> {/* user_id로 변경 */}
+                <td>{image.user_email}</td> {/* user_email로 변경 */}
                 <td><Button variant="secondary" onClick={() => handleOpenModal(image)}>Edit</Button></td>
               </tr>
             ))}

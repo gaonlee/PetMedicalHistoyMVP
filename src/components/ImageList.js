@@ -265,7 +265,7 @@ const ImageList = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button variant="outline-success" onClick={handleSearch}>Search</Button>
+                <Button variant="outline-success" onClick={handleSearch}>검색</Button>
             </Form>
             <div className="row">
                 {images.map((image) => (
@@ -283,9 +283,9 @@ const ImageList = () => {
                                     variant="primary" 
                                     onClick={() => handleViewDetails(image.file_id)} 
                                 >
-                                    View Details
+                                    상세보기
                                 </Button>
-                                <Button variant="danger" onClick={() => deleteImage(image.file_id)}>Delete</Button>
+                                <Button variant="danger" onClick={() => deleteImage(image.file_id)}>삭제</Button>
                             </Card.Body>
                         </Card>
                     </div>
