@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Card, Button } from 'react-bootstrap';
 
-const ImageDetailPage = () => {  // 컴포넌트 이름을 ImageDetailPage로 수정
+const ImageDetailPage = () => {
   const { file_id } = useParams(); // URL에서 file_id를 가져옵니다.
   const [image, setImage] = useState(null);
   const [imageSrc, setImageSrc] = useState('');
+  const navigate = useNavigate();
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -38,6 +39,14 @@ const ImageDetailPage = () => {  // 컴포넌트 이름을 ImageDetailPage로 �
     fetchImageDetail();
   }, [file_id, apiUrl]);
 
+  const handleBackToList = () => {
+    navigate('/list'); // 이미지 조회 페이지로 이동
+  };
+
+  const handleEdit = () => {
+    navigate(`/images/${file_id}/edit`); // 수정 페이지로 이동
+  };
+
   if (!image) return <p>Loading...</p>;
 
   return (
@@ -47,7 +56,14 @@ const ImageDetailPage = () => {  // 컴포넌트 이름을 ImageDetailPage로 �
         <Card.Body>
           <Card.Title>{image.title || 'Untitled'}</Card.Title>
           <Card.Text>{image.interpretation || 'No description available'}</Card.Text>
-          <Button variant="primary" href="/">Back to List</Button>
+          <div className="d-flex justify-content-end">
+            <Button variant="secondary" onClick={handleBackToList} className="mr-2">
+              나가기
+            </Button>
+            <Button variant="primary" onClick={handleEdit}>
+              수정하기
+            </Button>
+          </div>
         </Card.Body>
       </Card>
     </div>

@@ -21,7 +21,7 @@ function Profile({ user }) {
             <Card.Text>
               <strong>✨베타테스터✨</strong> {user.username}
             </Card.Text>
-            <Button variant="primary" onClick={() => navigate('/')}>뒤로가기</Button>
+            <Button variant="primary" onClick={() => navigate(-1)}>뒤로가기</Button>
           </Card.Body>
         </Card>
       </div>

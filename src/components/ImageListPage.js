@@ -13,7 +13,9 @@ function ImageListPage({ authToken, images }) {
         <Row>
           <Col>
             <h2 className="text-center">진료이력 조회</h2>
-            <p className="text-center">생성된 진료이력을 조회하세요. 수정도 가능합니다:)</p> {/* 설명 추가 */}
+            <p className="text-center">생성된 진료이력을 조회하세요. 수정도 가능합니다:)<br />
+                                      진료이력은 하루 안에 생성됩니다!
+            </p> {/* 설명 추가 */}
             <ImageList authToken={authToken} images={images} />
           </Col>
         </Row>

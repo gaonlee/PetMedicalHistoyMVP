@@ -10,6 +10,7 @@ import Profile from './components/ProfilePage';
 import Login from './components/Login';
 import Register from './components/Register';
 import AdminPage from './components/AdminPage';
+import ImageEditPage from './components/ImageEditPage';
 import { Container } from 'react-bootstrap';
 import { jwtDecode } from 'jwt-decode';
 import './App.css';
@@ -74,7 +75,8 @@ function App() {
           <Route path="/list" element={token ? <ImageListPage authToken={token} /> : <Navigate to="/login" />} />
           <Route path="/images/:file_id" element={token ? <ImageDetailPage authToken={token} /> : <Navigate to="/login" />} />
           <Route path="/admin" element={isAdmin ? <AdminPage authToken={token} /> : <Navigate to="/" />} />
-          <Route path="/profile" element={token ? <Profile user={user} /> : <Navigate to="/login" />} /> {/* Profile 라우트 추가 */}
+          <Route path="/profile" element={token ? <Profile user={user} /> : <Navigate to="/login" />} />
+          <Route path="/images/:file_id/edit" element={<ImageEditPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Container>

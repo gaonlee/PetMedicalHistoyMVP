@@ -14,10 +14,10 @@ function Home({ authToken, onLogout, isAdmin }) {
           <Col className="text-center">
             <h1 className="title">촉촉한코</h1>
             <p>
-              안녕하세요! 동물병원 진료이력 저장소입니다. <br /><br />
-              동물병원 세부내역 영수증, 직접 작성하신 메모 등 <br />
-              동물병원 방문과 관련된 자료를 업로드해주세요! <br />
-              자료를 기반으로 진료이력을 생성해줍니다!
+              🍀안녕하세요! 동물병원 진료이력 생성 & 저장소입니다.🍀 <br /><br />
+              동물병원 세부내역 영수증을 업로드해주세요! <br />
+              <br />
+              이미지를 기반으로 진료이력을 생성해줍니다📄
             </p>
             {authToken ? (
               <>
