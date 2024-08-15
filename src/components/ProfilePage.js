@@ -19,7 +19,7 @@ function Profile({ user }) {
           <Card.Body>
             <Card.Title>내 정보</Card.Title>
             <Card.Text>
-              <strong>✨베타테스터✨</strong> {user.username}
+              <strong>✨알파테스터✨</strong> {user.username}
             </Card.Text>
             <Button variant="primary" onClick={() => navigate(-1)}>뒤로가기</Button>
           </Card.Body>
