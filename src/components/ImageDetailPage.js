@@ -55,8 +55,12 @@ const ImageDetailPage = () => {
         <Card.Img variant="top" src={imageSrc} alt={image.title || 'Image'} />
         <Card.Body>
           <Card.Title>{image.title || 'Untitled'}</Card.Title>
-          <Card.Text>{image.interpretation || 'No description available'}</Card.Text>
+          {/* 줄바꿈이 반영되도록 white-space 스타일 적용 */}
+          <Card.Text style={{ whiteSpace: 'pre-line' }}>
+            {image.interpretation || 'No description available'}
+          </Card.Text>
           <div className="d-flex justify-content-end">
+            {/* 버튼 크기 조정 및 스타일 수정 */}
             <Button variant="secondary" onClick={handleBackToList} className="mr-2">
               나가기
             </Button>
