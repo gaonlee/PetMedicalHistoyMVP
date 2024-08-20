@@ -1,120 +1,3 @@
-// import React, { useEffect, useState, useCallback } from 'react';
-// import axios from 'axios';
-// import { Card, Form, FormControl, Button } from 'react-bootstrap';
-// import { useNavigate } from 'react-router-dom';
-// import '../styles/Button.css';
-// import '../styles/ImageList.css';
-
-// const apiUrl = process.env.REACT_APP_API_URL;
-
-// function ImageList({ authToken }) {
-//   const [images, setImages] = useState([]);
-//   const [searchQuery, setSearchQuery] = useState('');
-//   const navigate = useNavigate();
-
-//   const fetchImages = useCallback(async () => {
-//     console.log('Auth Token:', authToken);
-//     try {
-//       const response = await axios.get(`${apiUrl}/images`, {  
-//         headers: {
-//           'Authorization': `Bearer ${authToken}`
-//         }
-//       });
-//       console.log('Fetched Images:', response.data);
-//       setImages(response.data);
-//     } catch (error) {
-//       console.error('Error fetching images:', error);
-//     }
-//   }, [authToken]);
-
-//   useEffect(() => {
-//     fetchImages();
-//   }, [fetchImages]);
-
-//   const handleSearch = async (event) => {
-//     event.preventDefault();
-//     console.log(`Search query: ${searchQuery}`); 
-//     if (!searchQuery.trim()) {
-//       console.error('Search query is empty');
-//       return;
-//     }
-//     try {
-//       const response = await axios.get(`${apiUrl}/search`, {
-//         params: { q: searchQuery },
-//         headers: {
-//           'Authorization': `Bearer ${authToken}`
-//         }
-//       });
-//       console.log(response.data);
-//       setImages(response.data);
-//     } catch (error) {
-//       console.error('Error searching images:', error);
-//     }
-//   };
-
-//   const handleImageClick = (image) => {
-//     if (image.file_id) {
-//         console.log('Navigating to image with ID:', image.file_id);
-//         navigate(`/images/${image.file_id}`);
-//     } else {
-//         console.error('File ID is missing for image:', image);
-//     }
-//   };
-
-//   return (
-//     <div className="image-list-container">
-//       <Form onSubmit={handleSearch} className="form-inline search-form">
-//         <FormControl
-//           type="text"
-//           placeholder="Search images"
-//           value={searchQuery}
-//           onChange={(e) => setSearchQuery(e.target.value)}
-//         />
-//         <Button type="submit" variant="primary">검색</Button>
-//       </Form>
-//       <div className="image-list">
-//         {images && images.length > 0 ? images.map((image, index) => (
-//           <Card key={index} onClick={() => handleImageClick(image)} className="card">
-//             {/* file_id가 존재하는 경우 file_id를 사용 */}
-//             {image.file_id ? (
-//               <>
-//                 <Card.Img 
-//                   variant="top" 
-//                   src={`${apiUrl}/images/${image.file_id}`} 
-//                   onError={(e) => {
-//                     console.error(`Failed to load image with file_id: ${image.file_id}`, e);
-//                   }} 
-//                 />
-//                 {console.log(`Requesting image with file_id: ${image.file_id}`)}
-//               </>
-//             ) : (
-//               <>
-//                 <Card.Img 
-//                   variant="top" 
-//                   src={`${apiUrl}/uploads/${image.filename}`} 
-//                   onError={(e) => {
-//                     console.error(`Failed to load image with filename: ${image.filename}`, e);
-//                   }} 
-//                 />
-//                 {console.log(`Requesting image with filename: ${image.filename}`)}
-//               </>
-//             )}
-
-//             <Card.Body className="card-body">
-//               <Card.Title className="card-title">{image.title}</Card.Title>
-//               <Card.Text className="card-text">{image.interpretation}</Card.Text>
-//             </Card.Body>
-//           </Card>
-//         )) : (
-//           <p>No images found</p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default ImageList;
-
 import React, { useEffect, useState, useCallback } from 'react';
 import { Card, Form, FormControl, Button } from 'react-bootstrap';
 import axios from 'axios';
@@ -128,7 +11,6 @@ const ImageList = () => {
 
     const apiUrl = process.env.REACT_APP_API_URL;
 
-    // 이미지를 가져오는 함수
     const fetchImage = useCallback(async (file_id) => {
         try {
             if (!file_id) {
@@ -136,7 +18,7 @@ const ImageList = () => {
                 return null;
             }
 
-            const token = localStorage.getItem('token');  // 토큰 가져오기
+            const token = localStorage.getItem('token');
             if (!token) {
                 console.error('No token found');
                 return null;
@@ -144,7 +26,7 @@ const ImageList = () => {
 
             const response = await axios.get(`${apiUrl}/images/${file_id}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`,  // 토큰 설정
+                    Authorization: `Bearer ${token}`,
                 },
                 responseType: 'blob'
             });
@@ -155,10 +37,9 @@ const ImageList = () => {
         }
     }, [apiUrl]);
 
-    // 모든 이미지를 가져오는 함수
     const fetchImages = useCallback(async () => {
         try {
-            const token = localStorage.getItem('token');  // 토큰 가져오기
+            const token = localStorage.getItem('token');
             if (!token) {
                 console.error('No token found');
                 return;
@@ -166,7 +47,7 @@ const ImageList = () => {
 
             const response = await axios.get(`${apiUrl}/images`, {
                 headers: {
-                    Authorization: `Bearer ${token}`,  // 토큰 설정
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
@@ -192,7 +73,7 @@ const ImageList = () => {
 
     const handleSearch = async () => {
         try {
-            const token = localStorage.getItem('token');  // 토큰 가져오기
+            const token = localStorage.getItem('token');
             if (!token) {
                 console.error('No token found');
                 return;
@@ -200,7 +81,7 @@ const ImageList = () => {
 
             const response = await axios.get(`${apiUrl}/search?q=${searchTerm}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`,  // 토큰 설정
+                    Authorization: `Bearer ${token}`,
                 },
             });
             setImages(response.data);
@@ -227,7 +108,7 @@ const ImageList = () => {
                 return;
             }
 
-            const token = localStorage.getItem('token');  // 토큰 가져오기
+            const token = localStorage.getItem('token');
             if (!token) {
                 console.error('No token found');
                 return;
@@ -235,7 +116,7 @@ const ImageList = () => {
 
             await axios.delete(`${apiUrl}/images/${file_id}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`,  // 토큰 설정
+                    Authorization: `Bearer ${token}`,
                 },
             });
             setImages(images.filter(image => image.file_id !== file_id));
@@ -278,7 +159,10 @@ const ImageList = () => {
                             />
                             <Card.Body>
                                 <Card.Title>{image.title || 'Untitled'}</Card.Title>
-                                <Card.Text>{image.interpretation || 'No description available'}</Card.Text>
+                                {/* 줄바꿈을 반영하기 위해 white-space: pre-line 적용 */}
+                                <Card.Text style={{ whiteSpace: 'pre-line' }}>
+                                    {image.interpretation || 'No description available'}
+                                </Card.Text>
                                 <Button 
                                     variant="primary" 
                                     onClick={() => handleViewDetails(image.file_id)} 
@@ -296,12 +180,3 @@ const ImageList = () => {
 };
 
 export default ImageList;
-
-
-
-
-
-
-
-
-
